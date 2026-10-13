@@ -1,0 +1,31 @@
+# Optional self-hosting: the app plus Postgres. For the free cloud deploy see the README (Vercel + Neon).
+services:
+  app:
+    build: .
+    ports:
+      - "3001:3001"
+    environment:
+      JWT_SECRET: ${JWT_SECRET:?set JWT_SECRET in your environment or a .env file}
+      DATABASE_URL: postgres://postboard:postboard@db:5432/postboard
+      AI_API_KEY: ${AI_API_KEY:-}
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: postboard
+      POSTGRES_PASSWORD: postboard
+      POSTGRES_DB: postboard
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postboard"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  dbdata:

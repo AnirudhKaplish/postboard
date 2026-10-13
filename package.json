@@ -1,0 +1,16 @@
+{
+  "name": "postboard",
+  "version": "1.0.0",
+  "description": "A full-stack community board: React, Express, Sequelize, JWT auth",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "install:all": "npm --prefix server install && npm --prefix client install",
+    "dev": "npx --yes concurrently -n api,web -c blue,magenta \"npm --prefix server run dev\" \"npm --prefix client run dev\"",
+    "build": "npm --prefix client run build",
+    "start": "npm --prefix server start",
+    "seed": "npm --prefix server run seed",
+    "test": "npm --prefix server test && npm --prefix client test"
+  },
+  "engines": { "node": ">=22.13" }
+}
